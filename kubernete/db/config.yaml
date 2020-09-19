@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dbconfig
+data:
+  DB_NAME: db
+  DB_PORT: '27017'

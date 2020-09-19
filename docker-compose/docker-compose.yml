@@ -1,0 +1,39 @@
+version: '3.4'
+
+services:
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: db
+    volumes:
+      - data-db:/data/db
+
+  backend:
+    image: backend
+    ports: 
+      - 8000:8000
+    environment:
+      MONGO_HOST: 'mongo'
+      MONGO_PORT: 27017
+      MONGO_DB: 'db'
+      PORT: 8000
+    depends_on:
+        - mongo
+  
+  frontend:
+    image: frontend
+    ports: 
+      - 3000:3000
+    depends_on:
+        - backend
+
+  nginx:
+    image: nginx
+    ports: 
+      - 80:80
+    depends_on:
+        - backend
+        - frontend
+volumes: 
+    data-db:

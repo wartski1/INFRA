@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: back
+spec:
+  replicas: INSTANCES
+  selector:
+    matchLabels:
+      app: back
+  template:
+    metadata:
+      labels:
+        app: back
+    spec:
+      containers:
+      - name: back
+        image: DOCKER_IMAGE:TAG
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+        env:
+        - name: MONGO_DB
+          valueFrom:
+            configMapKeyRef:
+              name: dbconfig
+              key: DB_NAME
+        - name: MONGO_HOST
+          value: mongo
+        - name: MONGO_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: dbconfig
+              key: DB_PORT
